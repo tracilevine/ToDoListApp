@@ -50,6 +50,36 @@ app.post("/api/items", (req, res, next) => {
   }
 });
 
+//for checking the post request
+app.patch('/api/items/:id', (req, res, next) => {
+	const itemID = Number(req.params.id);
+  const itemToComplete = items.find(
+	  item => item.id === itemID
+  )
+  if (itemToComplete) {
+	  const indexOfItemToComplete = items.indexOf(itemToComplete);
+    itemToComplete.completed = !itemToComplete.completed;
+    items.splice(indexOfItemToComplete, 1, itemToComplete);
+    res.json(itemToComplete);
+  } else {
+    res.status(404).json({error: 'Id not found'});
+  }
+});
+// this route will delete 
+app.delete('/api/items/:id', (req, res, next) => {
+	const itemID = Number(req.params.id);
+  const itemToDelete = items.find(
+	  item => item.id === itemID
+  )
+  if (itemToDelete) {
+	  const indexOfItemToDelete = items.indexOf(itemToDelete);
+    items.splice(indexOfItemToDelete, 1);
+    res.json(itemToDelete);
+  } else {
+	  res.status(404).json({error: 'id not found'});
+  }
+});
+
 /**
  * Server Activation
  */
